@@ -68,7 +68,8 @@ h1 em, .slogan em { font-style: normal; white-space: nowrap; }
 .col { position: relative; flex: 1; height: var(--h); border-radius: 1rem 1rem 0 0; overflow: hidden; background: var(--soft); text-decoration: none; }
 .col img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--sc-ease-out); }
 .col span { position: absolute; left: 0.6rem; top: 0.6rem; background: var(--white); padding: 0.4rem 0.7rem; border-radius: 0.4rem; font-weight: 700; font-size: 0.9375rem; line-height: 1.2; }
-.col:last-of-type span { background: var(--orange); color: var(--white); }
+.col:last-of-type span { background: var(--blue); color: var(--white); }
+@media (min-width: 861px) { .col span { max-width: calc(100% - 1.2rem); } } /* a two-line label keeps its gap on the right too */
 .col:hover img { transform: scale(1.04); }
 
 /* Opening (Nikola, 2026-11-15: no squish; the dashed trend line was removed on 2026-11-22).
