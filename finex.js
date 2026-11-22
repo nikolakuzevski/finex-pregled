@@ -31,6 +31,11 @@
       });
     }
     document.querySelectorAll('[data-lang-set]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.langSet === lang)));
+    // Links between the pages keep the language: "./#uslugi" becomes "./?lang=en#uslugi".
+    document.querySelectorAll('a[data-page]').forEach((a) => {
+      const [path, hash] = a.dataset.page.split('#');
+      a.setAttribute('href', path + (lang === 'en' ? '?lang=en' : '') + (hash ? '#' + hash : ''));
+    });
     document.dispatchEvent(new CustomEvent('finex:lang', { detail: lang }));
   }
 
@@ -65,7 +70,7 @@
   const onScroll = () => bar.classList.toggle('is-scrolled', scrollY > 8);
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-  if (!('IntersectionObserver' in window)) return;
+  if (!('IntersectionObserver' in window) || !document.querySelector('.hero')) return; // legal pages have no sections
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
