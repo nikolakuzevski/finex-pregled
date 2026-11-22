@@ -282,6 +282,10 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
   .col { height: clamp(3.5rem, 7.5svh, 5.5rem); }
   .col span { font-size: 1rem; }
 }
+/* No buttons in the hero (trial, Nikola 2026-11-22): the bars grow into their place. Stops
+   applying by itself if the .act row comes back. */
+@media (max-width: 599px) { .hero:not(:has(.act)) .col { height: clamp(2.9rem, calc((100svh - 26.5rem) / 6), 4.75rem); } }
+@media (min-width: 600px) and (max-width: 860px) { .hero:not(:has(.act)) .col { height: clamp(3.5rem, 9.2svh, 7rem); } }
 /* Phone opening: the same idea as on desktop, turned on its side. Each bar grows out of the
    base line to the right, its photo sliding in with it, then the label lands. */
 @media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
