@@ -71,11 +71,16 @@ h1 em, .slogan em { font-style: normal; white-space: nowrap; }
 .col { position: relative; flex: 1; height: var(--h); border-radius: 1rem 1rem 0 0; overflow: hidden; background: var(--soft); text-decoration: none; }
 .col img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--sc-ease-out); }
 .col span { position: absolute; left: 0.6rem; top: 0.6rem; background: var(--white); padding: 0.4rem 0.7rem; border-radius: 0.4rem; font-weight: 700; font-size: 0.9375rem; line-height: 1.2; }
-.col:last-of-type span { background: var(--blue); color: var(--white); }
+.col:last-of-type span { background: var(--orange); color: var(--white); }
 @media (min-width: 861px) { .col span { max-width: calc(100% - 1.2rem); } } /* a two-line label keeps its gap on the right too */
 .col:hover img { transform: scale(1.04); }
 
-/* Opening (Nikola, 2026-11-15: no squish; the dashed trend line was removed on 2026-11-22).
+/* One straight dashed line over the bars (Nikola, 2026-11-22: no kinks, not curved). A straight
+   line stays clear of the tops because the bars grow faster towards the end. */
+.trend { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.trend line { stroke: var(--orange); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 6 8; }
+
+/* Opening (Nikola, 2026-11-15: no squish, the line draws itself from bottom left to top right).
    Each bar rises out of the base line like a column of a chart being filled: the bar's
    outline opens upward while its photo slides up inside it, left to right, one after another.
    The label lands once its bar is up. All with fill-mode
@@ -84,11 +89,13 @@ h1 em, .slogan em { font-style: normal; white-space: nowrap; }
   .col { --t: calc(var(--i) * 120ms + 250ms); animation: bar-up 950ms cubic-bezier(0.65, 0, 0.2, 1) var(--t) backwards; }
   .col img { animation: photo-up 1300ms cubic-bezier(0.22, 1, 0.36, 1) var(--t) backwards; }
   .col span { animation: label-in 380ms ease-out calc(var(--t) + 750ms) backwards; }
+  .trend { animation: draw 1500ms cubic-bezier(0.55, 0, 0.35, 1) 450ms backwards; }
   .head > * { animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
 }
 @keyframes bar-up { from { clip-path: inset(100% 0 0 0 round 1rem 1rem 0 0); } to { clip-path: inset(0 0 0 0 round 1rem 1rem 0 0); } }
 @keyframes photo-up { from { transform: translateY(35%) scale(1.15); } }
 @keyframes label-in { from { opacity: 0; } }
+@keyframes draw { from { clip-path: inset(-30% 100% -5% 0); } to { clip-path: inset(-30% 0 -5% 0); } }
 @keyframes rise { from { transform: translateY(18px); opacity: 0; } }
 
 /* ------------------------------------------------- section furniture -- */
@@ -258,6 +265,8 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
   .col:nth-of-type(4) img { object-position: 45% 26% !important; }
   .col:nth-of-type(5) img { object-position: 50% 22% !important; }
   .col:nth-of-type(6) img { object-position: 50% 30% !important; }
+
+  .trend { display: none; }
 
   .svc { grid-template-columns: 1fr; }
   .svc__stage { display: none; }
