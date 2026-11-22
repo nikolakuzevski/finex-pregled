@@ -37,8 +37,11 @@ img { max-width: 100%; }
 .btn:active { transform: translateY(1px); }
 .btn--navy { background: var(--navy); font-size: 1rem; font-weight: 600; min-height: 2.75rem; padding: 0 1.15rem; }
 .btn--navy:hover { background: #1A2550; }
-.link { font-weight: 600; text-decoration: underline; text-underline-offset: 0.3em; text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
-.link:hover { color: var(--orange); }
+/* No underline (Nikola, 2026-11-22): navy and bold, the blue arrow says it is a link. */
+.link { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; font-weight: 700; font-size: 1.125rem; color: var(--navy); text-decoration: none; transition: color 160ms ease; }
+.link svg { color: var(--blue); width: 1.15rem; height: 1.15rem; flex: none; transition: transform 160ms ease; }
+.link:hover { color: var(--blue); }
+.link:hover svg { transform: translateY(3px); }
 
 /* --------------------------------------------------------------- bar -- */
 .bar { position: fixed; inset: 0 0 auto; z-index: 60; height: var(--bar-h); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 var(--margin); background: var(--white); transition: box-shadow 200ms ease; }
@@ -94,6 +97,9 @@ section[id]:not(.hero) { padding-block: clamp(4.5rem, 9vw, 8.5rem); }
 .eyebrow { font-size: 0.9375rem; font-weight: 700; color: var(--orange); margin-bottom: 0.9rem; }
 .eyebrow--light { color: #F08A52; }
 h2 { font-weight: 800; font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.6rem); line-height: 1.05; letter-spacing: -0.035em; text-wrap: balance; }
+#uslugi { scroll-margin-top: -1.25rem; } /* no strip of the hero left under the bar */
+.sec-head--solo { margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+.sec-head--solo h2 { font-size: clamp(2.75rem, 1.6rem + 4vw, 5rem); line-height: 1; }
 .lead { margin-top: 1.25rem; font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem); color: var(--muted); max-width: 40ch; }
 
 /* ----------------------------------------------------------- services -- */
@@ -194,7 +200,7 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
 /* ----------------------------------------------- reduced motion extras -- */
 @media (prefers-reduced-motion: reduce) {
   .approach { --draw: 1; }
-  .svc__photo img, .col img { transition: none; }
+  .svc__photo img, .col img, .link svg { transition: none; }
 }
 
 /* ----------------------------------- short laptop screens (720 to 820) -- */
