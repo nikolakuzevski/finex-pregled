@@ -284,6 +284,12 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
 }
 /* No buttons in the hero (trial, Nikola 2026-11-22): the bars grow into their place. Stops
    applying by itself if the .act row comes back. */
+/* The text sits in the middle of the space between the bar and the top of the fifth column
+   (81 % of the chart), the one under the headline's right end. */
+.hero:not(:has(.act)) .head { margin-block: auto; }
+@media (min-width: 861px) { .hero:not(:has(.act)) { padding-bottom: calc(46vh * 0.81); } }
+@media (min-width: 861px) and (max-height: 820px) { .hero:not(:has(.act)) { padding-bottom: calc(44vh * 0.81); } }
+@media (max-width: 860px) { .hero:not(:has(.act)) .chart { margin-top: 0; } .hero:not(:has(.act)) .head { padding-block: 0.75rem; } }
 @media (max-width: 599px) { .hero:not(:has(.act)) .col { height: clamp(2.9rem, calc((100svh - 26.5rem) / 6), 4.75rem); } }
 @media (min-width: 600px) and (max-width: 860px) { .hero:not(:has(.act)) .col { height: clamp(3.5rem, 9.2svh, 7rem); } }
 /* Phone opening: the same idea as on desktop, turned on its side. Each bar grows out of the
