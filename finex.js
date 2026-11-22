@@ -83,6 +83,46 @@
     .observe(document.querySelector('.hero'));
 })();
 
+// Hero: the straight dashed line over the bars. It starts only when the pictures have fully
+// appeared (their opening animations are over and the photos are loaded), then shows one dash
+// after another. Every dash is its own line, so all are the same length and none is cut.
+(() => {
+  const svg = document.querySelector('.trend');
+  if (!svg) return;
+  const chart = svg.parentElement;
+  const FROM = [0.083, 0.57], TO = [0.917, -0.12]; // share of the chart's width and height
+  const DASH = 6, GAP = 8, TOTAL = 1700; // px, px, ms for the whole line
+  let started = false;
+  const draw = (play) => {
+    svg.replaceChildren();
+    svg.classList.toggle('is-playing', play);
+    if (getComputedStyle(svg).display === 'none') return; // phones have no line
+    const w = chart.clientWidth, h = chart.clientHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    const x = FROM[0] * w, y = FROM[1] * h, dx = TO[0] * w - x, dy = TO[1] * h - y;
+    const len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
+    const n = Math.round((len + GAP) / (DASH + GAP)), period = (len - DASH) / (n - 1);
+    for (let i = 0; i < n; i++) {
+      const a = i * period, b = a + DASH;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', (x + ux * a).toFixed(2)); line.setAttribute('y1', (y + uy * a).toFixed(2));
+      line.setAttribute('x2', (x + ux * b).toFixed(2)); line.setAttribute('y2', (y + uy * b).toFixed(2));
+      line.style.animationDelay = Math.round((i * TOTAL) / n) + 'ms';
+      svg.append(line);
+    }
+  };
+  const opening = chart.getAnimations ? chart.getAnimations({ subtree: true }).map((a) => a.finished) : [];
+  const photos = Promise.all([...chart.querySelectorAll('img')].map((i) => i.decode().catch(() => {})));
+  const enough = new Promise((r) => setTimeout(r, 5000)); // a photo that never loads must not hold the line back
+  Promise.all([Promise.allSettled(opening), Promise.race([photos, enough])]).then(() => { started = true; draw(true); });
+  let width = innerWidth, height = innerHeight;
+  addEventListener('resize', () => {
+    if (!started || (innerWidth === width && innerHeight === height)) return;
+    width = innerWidth; height = innerHeight;
+    draw(false);
+  }, { passive: true });
+})();
+
 // Services: the chart follows the text.
 (() => {
   const box = document.querySelector('[data-svc]');

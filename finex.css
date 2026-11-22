@@ -78,9 +78,10 @@ h1 em, .slogan em { font-style: normal; white-space: nowrap; }
 /* One straight dashed line over the bars (Nikola, 2026-11-22: no kinks, not curved). A straight
    line stays clear of the tops because the bars grow faster towards the end. */
 .trend { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.trend line { stroke: var(--orange); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 6 8; }
+.trend line { stroke: var(--orange); stroke-width: 3; stroke-linecap: round; }
 
-/* Opening (Nikola, 2026-11-15: no squish, the line draws itself from bottom left to top right).
+/* Opening (Nikola, 2026-11-15: no squish). The line waits for all of this and then appears
+   one dash at a time, no fade (Nikola, 2026-11-22; finex.js draws the dashes).
    Each bar rises out of the base line like a column of a chart being filled: the bar's
    outline opens upward while its photo slides up inside it, left to right, one after another.
    The label lands once its bar is up. All with fill-mode
@@ -89,13 +90,13 @@ h1 em, .slogan em { font-style: normal; white-space: nowrap; }
   .col { --t: calc(var(--i) * 120ms + 250ms); animation: bar-up 950ms cubic-bezier(0.65, 0, 0.2, 1) var(--t) backwards; }
   .col img { animation: photo-up 1300ms cubic-bezier(0.22, 1, 0.36, 1) var(--t) backwards; }
   .col span { animation: label-in 380ms ease-out calc(var(--t) + 750ms) backwards; }
-  .trend { animation: draw 1500ms cubic-bezier(0.55, 0, 0.35, 1) 450ms backwards; }
+  .trend.is-playing line { animation: dash-in 1ms steps(1) backwards; }
   .head > * { animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
 }
 @keyframes bar-up { from { clip-path: inset(100% 0 0 0 round 1rem 1rem 0 0); } to { clip-path: inset(0 0 0 0 round 1rem 1rem 0 0); } }
 @keyframes photo-up { from { transform: translateY(35%) scale(1.15); } }
 @keyframes label-in { from { opacity: 0; } }
-@keyframes draw { from { clip-path: inset(-30% 100% -5% 0); } to { clip-path: inset(-30% 0 -5% 0); } }
+@keyframes dash-in { from { visibility: hidden; } }
 @keyframes rise { from { transform: translateY(18px); opacity: 0; } }
 
 /* ------------------------------------------------- section furniture -- */
