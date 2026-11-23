@@ -229,18 +229,20 @@
         <input class="form__trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label><span data-en="Name and surname">Име и презиме</span><input name="Име и презиме" autocomplete="name" required></label>
         <label><span data-en="Company">Компанија</span><input name="Компанија" autocomplete="organization"></label>
-        <label><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="Телефон или е-пошта" autocomplete="email" required></label>
-        <label><span data-en="What do you need?">Што ви треба?</span>
-          <select name="Услуга">
-            <option data-en="Accounting">Сметководство</option>
-            <option data-en="Financial analysis">Финансиска анализа</option>
-            <option data-en="Business plan or feasibility study">Бизнис план или физибилити студија</option>
-            <option data-en="Training">Обука</option>
-            <option data-en="Controlling">Контролинг</option>
-            <option data-en="Outsourced financial management">Надворешен финансиски менаџмент</option>
-            <option data-en="Not sure yet">Сѐ уште не знам</option>
-          </select>
-        </label>
+        <label class="form__wide"><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="Телефон или е-пошта" autocomplete="email" required></label>
+        <!-- Values stay Macedonian in both languages, so the e-mail to the client reads the same. -->
+        <fieldset class="form__wide picks" data-picks>
+          <legend data-en="What do you need? <small>You can choose more than one.</small>">Што ви треба? <small>Може да изберете повеќе.</small></legend>
+          <div class="picks__list">
+            <label class="pick"><input type="checkbox" name="Услуга" value="Сметководство"><span data-en="Accounting">Сметководство</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Финансиска анализа"><span data-en="Financial analysis">Финансиска анализа</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Бизнис план или физибилити студија"><span data-en="Business plan or feasibility study">Бизнис план или физибилити студија</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Обука"><span data-en="Training">Обука</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Контролинг"><span data-en="Controlling">Контролинг</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Надворешен финансиски менаџмент"><span data-en="Outsourced financial management">Надворешен финансиски менаџмент</span></label>
+            <label class="pick"><input type="checkbox" name="Услуга" value="Сѐ уште не знам" data-pick-unsure><span data-en="Not sure yet">Сѐ уште не знам</span></label>
+          </div>
+        </fieldset>
         <label class="form__wide"><span data-en="Message (optional)">Порака (не е задолжително)</span><textarea name="Порака" rows="4"></textarea></label>
         <div class="form__wide form__end">
           <button class="btn" type="submit" data-en="Send">Испратете</button>

@@ -198,7 +198,9 @@
     });
     if (first) { say(t.missing); first.focus(); return; }
 
-    const data = Object.fromEntries(new FormData(form));
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd);
+    data['Услуга'] = fd.getAll('Услуга').join(', ') || 'Не е избрано';
     const contact = (data['Телефон или е-пошта'] || '').trim();
     const payload = {
       ...data,
@@ -227,6 +229,14 @@
     }
   });
   form.addEventListener('input', (e) => { if (e.target.value.trim()) e.target.removeAttribute('aria-invalid'); });
+  // Services: any number can be ticked, but "Not sure yet" and a named service exclude each other.
+  const picks = [...form.querySelectorAll('[data-picks] input[type="checkbox"]')];
+  form.addEventListener('change', (e) => {
+    const box = e.target;
+    if (!picks.includes(box) || !box.checked) return;
+    const unsure = box.hasAttribute('data-pick-unsure');
+    picks.forEach((p) => { if (p !== box && p.hasAttribute('data-pick-unsure') !== unsure) p.checked = false; });
+  });
 })();
 
 if (window.ScrollCraft) window.ScrollCraft.mount(document.body);
