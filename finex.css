@@ -150,7 +150,7 @@ h2 { font-weight: 800; font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.6rem); line-he
 .steps li p { text-wrap: pretty; margin-top: 0.6rem; color: var(--muted); }
 
 /* -------------------------------------------------------------- about -- */
-.about__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: end; }
+.about__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
 .slogan { font-size: clamp(2.2rem, 1.2rem + 3vw, 4rem); line-height: 1.05; }
 .about__body > p { font-size: 1.1875rem; color: var(--muted); }
 .values { margin-top: 2.25rem; display: grid; gap: 1.25rem; }
