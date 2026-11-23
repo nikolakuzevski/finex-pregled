@@ -229,14 +229,44 @@
     }
   });
   form.addEventListener('input', (e) => { if (e.target.value.trim()) e.target.removeAttribute('aria-invalid'); });
-  // Services: any number can be ticked, but "Not sure yet" and a named service exclude each other.
-  const picks = [...form.querySelectorAll('[data-picks] input[type="checkbox"]')];
+  // Services: a closed field that opens a list of tick boxes. Any number can be ticked, but
+  // "Not sure yet" and a named service exclude each other. The field shows what is ticked.
+  const wrap = form.querySelector('[data-picks]');
+  const toggle = wrap.querySelector('.picks__toggle');
+  const list = wrap.querySelector('.picks__list');
+  const summary = wrap.querySelector('[data-picks-summary]');
+  const picks = [...list.querySelectorAll('input[type="checkbox"]')];
+  const empty = { mk: 'Изберете, може повеќе', en: 'Choose, more than one is fine' };
+  const showSummary = () => {
+    const names = picks.filter((p) => p.checked).map((p) => p.nextElementSibling.textContent.trim());
+    summary.textContent = names.length ? names.join(', ') : empty[document.documentElement.lang === 'en' ? 'en' : 'mk'];
+    summary.classList.toggle('is-empty', !names.length);
+  };
+  const setOpen = (open) => { list.hidden = !open; toggle.setAttribute('aria-expanded', String(open)); };
+  toggle.addEventListener('click', () => {
+    const open = list.hidden;
+    setOpen(open);
+    if (open) (picks.find((p) => p.checked) || picks[0]).focus({ preventScroll: true });
+  });
+  // A mouse press on a row's text would otherwise blur the list and close it before the tick lands.
+  list.addEventListener('mousedown', (e) => { if (e.target.type !== 'checkbox') e.preventDefault(); });
+  document.addEventListener('click', (e) => { if (!list.hidden && !wrap.contains(e.target)) setOpen(false); });
+  wrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !list.hidden) { e.preventDefault(); setOpen(false); toggle.focus(); }
+  });
+  wrap.addEventListener('focusout', (e) => { if (!list.hidden && !wrap.contains(e.relatedTarget)) setOpen(false); });
   form.addEventListener('change', (e) => {
     const box = e.target;
-    if (!picks.includes(box) || !box.checked) return;
-    const unsure = box.hasAttribute('data-pick-unsure');
-    picks.forEach((p) => { if (p !== box && p.hasAttribute('data-pick-unsure') !== unsure) p.checked = false; });
+    if (!picks.includes(box)) return;
+    if (box.checked) {
+      const unsure = box.hasAttribute('data-pick-unsure');
+      picks.forEach((p) => { if (p !== box && p.hasAttribute('data-pick-unsure') !== unsure) p.checked = false; });
+    }
+    showSummary();
   });
+  form.addEventListener('reset', () => setTimeout(() => { showSummary(); setOpen(false); }));
+  document.addEventListener('finex:lang', showSummary);
+  showSummary();
 })();
 
 if (window.ScrollCraft) window.ScrollCraft.mount(document.body);

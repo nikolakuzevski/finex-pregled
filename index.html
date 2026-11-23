@@ -229,11 +229,16 @@
         <input class="form__trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label><span data-en="Name and surname">Име и презиме</span><input name="Име и презиме" autocomplete="name" required></label>
         <label><span data-en="Company">Компанија</span><input name="Компанија" autocomplete="organization"></label>
-        <label class="form__wide"><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="Телефон или е-пошта" autocomplete="email" required></label>
-        <!-- Values stay Macedonian in both languages, so the e-mail to the client reads the same. -->
-        <fieldset class="form__wide picks" data-picks>
-          <legend data-en="What do you need? <small>You can choose more than one.</small>">Што ви треба? <small>Може да изберете повеќе.</small></legend>
-          <div class="picks__list">
+        <label><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="Телефон или е-пошта" autocomplete="email" required></label>
+        <!-- A closed field like the others; the tick boxes open under it (finex.js).
+             Values stay Macedonian in both languages, so the e-mail to the client reads the same. -->
+        <div class="picks" data-picks>
+          <span class="picks__label" id="picks-label" data-en="What do you need?">Што ви треба?</span>
+          <button class="picks__toggle" type="button" aria-expanded="false" aria-controls="picks-list" aria-labelledby="picks-label picks-summary">
+            <span class="picks__summary is-empty" id="picks-summary" data-picks-summary>Изберете, може повеќе</span>
+            <svg class="picks__chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="picks__list" id="picks-list" role="group" aria-labelledby="picks-label" hidden>
             <label class="pick"><input type="checkbox" name="Услуга" value="Сметководство"><span data-en="Accounting">Сметководство</span></label>
             <label class="pick"><input type="checkbox" name="Услуга" value="Финансиска анализа"><span data-en="Financial analysis">Финансиска анализа</span></label>
             <label class="pick"><input type="checkbox" name="Услуга" value="Бизнис план или физибилити студија"><span data-en="Business plan or feasibility study">Бизнис план или физибилити студија</span></label>
@@ -242,7 +247,7 @@
             <label class="pick"><input type="checkbox" name="Услуга" value="Надворешен финансиски менаџмент"><span data-en="Outsourced financial management">Надворешен финансиски менаџмент</span></label>
             <label class="pick"><input type="checkbox" name="Услуга" value="Сѐ уште не знам" data-pick-unsure><span data-en="Not sure yet">Сѐ уште не знам</span></label>
           </div>
-        </fieldset>
+        </div>
         <label class="form__wide"><span data-en="Message (optional)">Порака (не е задолжително)</span><textarea name="Порака" rows="4"></textarea></label>
         <div class="form__wide form__end">
           <button class="btn" type="submit" data-en="Send">Испратете</button>
