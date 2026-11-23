@@ -4,7 +4,8 @@
 // - Phone menu, bar shadow after the hero, current section marked in the menu.
 // - Services: the bar of the service in the middle of the screen is orange, read ones navy,
 //   and the photo beside the text follows it.
-// - Contact form: checks the required fields; it is not wired to any inbox yet.
+// - Contact form: checks the required fields, then sends through FormSubmit's AJAX endpoint
+//   to the address in the form's data-form (finansiskimenadzment@gmail.com).
 // - Starts the scroll-craft engine (reveals and the approach line's --sc-p).
 (() => {
   const root = document.documentElement;
@@ -162,16 +163,31 @@
   document.fonts && document.fonts.ready.then(place);
 })();
 
-// Contact form: not connected to an inbox yet, so it says so instead of pretending to send.
+// Contact form: FormSubmit (formsubmit.co) e-mails each message to the inbox. The very first
+// message sends an activation e-mail to that inbox instead; nothing arrives until its link is
+// clicked once. The honeypot field _honey stays empty for people and catches simple bots.
 (() => {
   const form = document.querySelector('[data-form]');
   if (!form) return;
   const status = form.querySelector('[data-form-status]');
+  const button = form.querySelector('button[type="submit"]');
+  const endpoint = 'https://formsubmit.co/ajax/' + form.dataset.form;
   const text = {
-    mk: { missing: 'Пополнете ги име и презиме и телефон или е-пошта.', preview: 'Ова е преглед на страницата: формата ќе почне да праќа пораки откако ќе биде поврзана со вашата е-пошта.' },
-    en: { missing: 'Please fill in your name and a phone number or e-mail.', preview: 'This is a preview of the site: the form will start sending messages once it is connected to your e-mail.' },
+    mk: {
+      missing: 'Пополнете ги име и презиме и телефон или е-пошта.',
+      sending: 'Се праќа…',
+      sent: 'Ви благодариме. Пораката е примена, ќе ви се јавиме наскоро.',
+      failed: 'Пораката не беше пратена. Обидете се повторно или јавете ни се на +389 71 260 471.',
+    },
+    en: {
+      missing: 'Please fill in your name and a phone number or e-mail.',
+      sending: 'Sending…',
+      sent: 'Thank you. Your message has arrived and we will get back to you soon.',
+      failed: 'The message was not sent. Please try again or call us on +389 71 260 471.',
+    },
   };
-  form.addEventListener('submit', (e) => {
+  const say = (msg, ok) => { status.textContent = msg; status.classList.toggle('is-ok', !!ok); };
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const t = text[document.documentElement.lang === 'en' ? 'en' : 'mk'];
     let first = null;
@@ -180,8 +196,35 @@
       f.setAttribute('aria-invalid', String(bad));
       if (bad && !first) first = f;
     });
-    if (first) { status.textContent = t.missing; first.focus(); return; }
-    status.textContent = t.preview;
+    if (first) { say(t.missing); first.focus(); return; }
+
+    const data = Object.fromEntries(new FormData(form));
+    const contact = (data['Телефон или е-пошта'] || '').trim();
+    const payload = {
+      ...data,
+      _subject: 'Finex: нова порака од ' + (data['Име и презиме'] || '').trim(),
+      _template: 'table',
+      _captcha: 'false',
+    };
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) payload._replyto = contact;
+
+    button.disabled = true;
+    say(t.sending);
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || String(out.success) === 'false') throw new Error(out.message || res.status);
+      form.reset();
+      say(t.sent, true);
+    } catch (err) {
+      say(t.failed);
+    } finally {
+      button.disabled = false;
+    }
   });
   form.addEventListener('input', (e) => { if (e.target.value.trim()) e.target.removeAttribute('aria-invalid'); });
 })();

@@ -219,14 +219,19 @@
         <p class="eyebrow eyebrow--light" data-en="Contact">Контакт</p>
         <h2 data-en="Book a meeting">Закажете средба</h2>
         <p data-en="Tell us briefly what you need. We will get back to you to agree on a time.">Кажете ни накратко што ви треба. Ќе ви се јавиме за да договориме термин.</p>
-        <p class="note" data-en="Phone, e-mail and address will be added here once we have them.">Телефон, е-пошта и адреса ќе бидат додадени овде штом ги добиеме.</p>
+        <dl class="reach">
+          <div><dt data-en="Phone">Телефон</dt><dd><a href="tel:+38971260471">+389 71 260 471</a></dd></div>
+          <div><dt data-en="E-mail">Е-пошта</dt><dd><a href="mailto:finansiskimenadzment@gmail.com">finansiskimenadzment@gmail.com</a></dd></div>
+          <div><dt data-en="Location">Место</dt><dd data-en="Skopje">Скопје</dd></div>
+        </dl>
       </div>
-      <form class="form" data-form novalidate data-sc-in>
-        <label><span data-en="Name and surname">Име и презиме</span><input name="ime" autocomplete="name" required></label>
-        <label><span data-en="Company">Компанија</span><input name="firma" autocomplete="organization"></label>
-        <label><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="kontakt" autocomplete="email" required></label>
+      <form class="form" data-form="finansiskimenadzment@gmail.com" novalidate data-sc-in>
+        <input class="form__trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label><span data-en="Name and surname">Име и презиме</span><input name="Име и презиме" autocomplete="name" required></label>
+        <label><span data-en="Company">Компанија</span><input name="Компанија" autocomplete="organization"></label>
+        <label><span data-en="Phone or e-mail">Телефон или е-пошта</span><input name="Телефон или е-пошта" autocomplete="email" required></label>
         <label><span data-en="What do you need?">Што ви треба?</span>
-          <select name="usluga">
+          <select name="Услуга">
             <option data-en="Accounting">Сметководство</option>
             <option data-en="Financial analysis">Финансиска анализа</option>
             <option data-en="Business plan or feasibility study">Бизнис план или физибилити студија</option>
@@ -236,7 +241,7 @@
             <option data-en="Not sure yet">Сѐ уште не знам</option>
           </select>
         </label>
-        <label class="form__wide"><span data-en="Message (optional)">Порака (не е задолжително)</span><textarea name="poraka" rows="4"></textarea></label>
+        <label class="form__wide"><span data-en="Message (optional)">Порака (не е задолжително)</span><textarea name="Порака" rows="4"></textarea></label>
         <div class="form__wide form__end">
           <button class="btn" type="submit" data-en="Send">Испратете</button>
           <p class="form__status" data-form-status role="status" aria-live="polite"></p>
@@ -261,6 +266,7 @@
       <a href="uslovi.html" data-page="uslovi.html" data-en="Terms of use">Услови за користење</a>
       <p class="foot__copy">© 2026 Finex</p>
     </div>
+    <p class="foot__firm">Друштво за консултантски услуги ФИНАНСИСКИ МЕНАЏМЕНТ ДООЕЛ Скопје<span><span data-en="Tax no. (ЕДБ)">ЕДБ</span> 4044024523820</span><span><span data-en="Reg. no. (ЕМБС)">ЕМБС</span> 7809778</span></p>
   </div>
 </footer>
 
