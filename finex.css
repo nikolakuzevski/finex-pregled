@@ -278,23 +278,20 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
   h1 { font-size: clamp(2.5rem, 11vw, 3.4rem); }
   .sub { font-size: 1.0625rem; margin-top: 1rem; }
   .act { flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
-  /* Phones (Nikola, 2026-11-15: thin upright bars hid the photos and the sideways labels were
-     hard to read). The chart lies on its side: six bars growing to the right from a navy base
-     line on the left, shortest on top, Финансиски менаџмент full width at the bottom. Labels
-     read normally and each photo shows as a wide strip. In the flow of the page, not pinned to
-     the bottom, so it can never cover the buttons on a short phone. */
+  /* Phones and upright tablets. The chart lies on its side (Nikola, 2026-11-15: thin upright bars
+     hid the photos and sideways labels were hard to read): six bars growing to the right,
+     shortest on top, Финансиски менаџмент full width at the bottom. Since 2026-11-23 (Nikola)
+     the bars are solid, navy with the last one orange, the name inside each bar, no photos and
+     no navy line down the left side. In the flow of the page, not pinned to the bottom. */
   .hero { height: auto; min-height: 100vh; min-height: 100svh; padding-bottom: 1.25rem; }
   .chart { position: relative; inset: auto; width: calc(100% - 2 * var(--margin)); height: auto; margin-top: auto; padding-top: 2rem;
-    flex-direction: column; align-items: flex-start; gap: 0.5rem; border-bottom: 0; border-left: 3px solid var(--navy); }
-  .col { flex: none; width: calc(25% + var(--h) * 0.75); height: clamp(2.9rem, 6.4svh, 3.75rem); border-radius: 0 0.6rem 0.6rem 0; }
-  .col span { left: 0.45rem; top: 50%; transform: translateY(-50%); padding: 0.35rem 0.6rem; font-size: 0.875rem; white-space: nowrap; }
-  /* The photos are framed for tall bars inline; a wide strip needs the faces instead. */
-  .col:nth-of-type(1) img { object-position: 65% 22% !important; }
-  .col:nth-of-type(2) img { object-position: 50% 40% !important; }
-  .col:nth-of-type(3) img { object-position: 30% 30% !important; }
-  .col:nth-of-type(4) img { object-position: 45% 26% !important; }
-  .col:nth-of-type(5) img { object-position: 50% 22% !important; }
-  .col:nth-of-type(6) img { object-position: 50% 30% !important; }
+    flex-direction: column; align-items: flex-start; gap: 0.5rem; border-bottom: 0; }
+  .col { flex: none; display: flex; align-items: center; width: calc(25% + var(--h) * 0.75); height: clamp(2.9rem, 6.4svh, 3.75rem);
+    padding-inline: 0.95rem; border-radius: 0 0.6rem 0.6rem 0; background: var(--navy); }
+  .col:last-of-type { background: var(--orange); }
+  .col img { display: none; }
+  .col span, .col:last-of-type span { position: static; padding: 0; background: none; color: var(--white); font-size: 0.9375rem; font-weight: 700; white-space: nowrap; }
+  .col:last-of-type span { color: var(--navy); } /* small text on orange is navy (contrast) */
 
   .trend { display: none; }
 
@@ -319,11 +316,6 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
   .foot__firm > span { display: block; }
   .foot__firm > span::before { content: none; }
 }
-/* Upright tablets: taller rows, so the chart fills the screen under the buttons. */
-@media (min-width: 600px) and (max-width: 860px) {
-  .col { height: clamp(3.5rem, 7.5svh, 5.5rem); }
-  .col span { font-size: 1rem; }
-}
 /* No buttons in the hero (trial, Nikola 2026-11-22): the bars grow into their place. Stops
    applying by itself if the .act row comes back. */
 /* The text sits in the middle of the space between the bar and the top of the fifth column
@@ -334,14 +326,14 @@ html[lang="en"] [data-lang-block="en"] { display: block; }
 @media (max-width: 860px) { .hero:not(:has(.act)) .chart { margin-top: 0; } .hero:not(:has(.act)) .head { padding-block: 0.75rem; } }
 @media (max-width: 599px) { .hero:not(:has(.act)) .col { height: clamp(2.9rem, calc((100svh - 26.5rem) / 6), 4.75rem); } }
 @media (min-width: 600px) and (max-width: 860px) { .hero:not(:has(.act)) .col { height: clamp(3.5rem, 9.2svh, 7rem); } }
+/* Upright tablets: a larger name in the taller bars. */
+@media (min-width: 600px) and (max-width: 860px) { .col span, .col:last-of-type span { font-size: 1.0625rem; } }
 /* Phone opening: the same idea as on desktop, turned on its side. Each bar grows out of the
-   base line to the right, its photo sliding in with it, then the label lands. */
+   left edge to the right, one after another, then its name lands. */
 @media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
   .col { animation-name: bar-right; }
-  .col img { animation-name: photo-right; }
 }
 @keyframes bar-right { from { clip-path: inset(0 100% 0 0 round 0 0.6rem 0.6rem 0); } to { clip-path: inset(0 0 0 0 round 0 0.6rem 0.6rem 0); } }
-@keyframes photo-right { from { transform: translateX(-30%) scale(1.15); } }
 @media (max-width: 380px) {
   .lang button { padding-inline: 0.3rem; }
 }
